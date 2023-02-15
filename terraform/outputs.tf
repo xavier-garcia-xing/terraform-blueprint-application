@@ -8,5 +8,5 @@ output "container_domain_name" {
 
 output "vpc" {
   description = "ID of project VPC from remote state"
-  value = "${data.terraform_remote_state.vpc.outputs}"
+  value       = data.terraform_remote_state.vpc.outputs
 }

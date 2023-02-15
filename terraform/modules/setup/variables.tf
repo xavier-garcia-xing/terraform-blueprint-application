@@ -59,9 +59,8 @@ variable "deployment_version" {
 
 
 variable "git_repo_root" {
-  type = string
+  type    = string
   default = "github.com"
-  
 }
 
 variable "git_domain" {

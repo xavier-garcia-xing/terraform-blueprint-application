@@ -115,6 +115,5 @@ module "container-platform" {
   }
   environment_type = var.environment_type
   environment_name = var.environment_name
-  vpc_id           = local.vpc_id 
-  
+  vpc_id           = local.vpc_id
 }

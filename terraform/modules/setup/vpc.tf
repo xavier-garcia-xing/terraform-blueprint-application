@@ -16,15 +16,12 @@ module "vpc" {
   single_nat_gateway            = true
   enable_dns_hostnames          = true
   manage_default_security_group = true
-  
   public_subnet_tags = {
     tier = "public"
   }
-
   private_subnet_tags = {
     tier = "private"
   }
-  
 }
 #Introduce vpc in ssm service of aws to share with other modules
 resource "aws_ssm_parameter" "vpc_id" {
