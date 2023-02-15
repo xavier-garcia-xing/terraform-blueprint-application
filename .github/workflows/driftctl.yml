@@ -1,0 +1,27 @@
+name: driftctl
+
+on:
+  schedule:
+    # run every day at 12 and 0
+    - cron: "0 12,0 * * *"
+
+jobs:
+  scheduled:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    env:
+      # starting with s3://....tfstate
+      terraform_state_file_path: nw-bucket-terraform-state-nw-996758699345-preview
+      accountId: 996758699345
+    steps:
+      - name: configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::${{ env.accountId }}:role/nw-driftctl
+          aws-region: eu-central-1
+
+      - name: Run driftctl
+        uses: snyk/driftctl-action@2332ee2e42be1e7397c288ed38302457862f34a8
+        with:
+          args: '--only-managed --from tfstate+${{ env.terraform_state_file_path }}'

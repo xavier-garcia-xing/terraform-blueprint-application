@@ -1,0 +1,19 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-preview:
+    uses: ./.github/workflows/.deploy.yml
+    with:
+      environment: preview
+      accountId: 996758699345
+  deploy-production:
+    uses: ./.github/workflows/.deploy.yml
+    needs: deploy-preview
+    with:
+      environment: production
+      accountId: 996758699345

@@ -1,0 +1,79 @@
+name: deploy
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      accountId:
+        required: true
+        type: string
+      aws_role:
+        required: false
+        type: string
+        default: blue-print-poc1-github-deployment
+      aws_region:
+        required: false
+        type: string
+        default: eu-central-1
+
+jobs:
+  terragrunt:
+    name: deployment
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      packages: read
+      contents: read
+    env:
+      tf_version: latest
+      tg_version: latest
+      conftest_version: 0.35.0
+      environment: ${{ inputs.environment }}
+      TF_IN_AUTOMATION: true
+      cpt_ecr_account_id: 154603002500
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::${{ inputs.accountId }}:role/${{ inputs.aws_role }}
+          aws-region: ${{ inputs.aws_region }}
+
+      - name: login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registries: ${{ env.cpt_ecr_account_id }}
+
+      - name: setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ env.tf_version }}
+          terraform_wrapper: false
+
+      - name: setup Terragrunt
+        uses: autero1/action-terragrunt@v1.2.0
+        with:
+          terragrunt_version: ${{ env.tg_version }}
+
+      - name: setup conftest
+        run: |
+          wget "https://github.com/open-policy-agent/conftest/releases/download/v${{ env.conftest_version }}/conftest_${{ env.conftest_version }}_Linux_x86_64.tar.gz"
+          tar xzf conftest_${{ env.conftest_version }}_Linux_x86_64.tar.gz
+          mv conftest /usr/local/bin
+          conftest -v
+
+      - name: terragrunt plan
+        run: ./scripts/plan.sh ${{ env.environment }}
+
+      - name: compliance check
+        run: ./scripts/compliance.sh ${{ env.environment }}
+
+      - name: terragrunt apply
+        env:
+          TF_CLI_ARGS: -auto-approve
+        run: ./scripts/apply.sh ${{ env.environment }}

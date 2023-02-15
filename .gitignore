@@ -1,0 +1,22 @@
+# build
+.out/
+
+# Terraform
+.terraform
+**/tfplan.*
+
+# Terragrunt
+**/.terragrunt-cache
+
+# Homebrew
+Brewfile.lock.json
+
+# General
+.DS_Store
+*.swp
+
+# Vscode
+.vscode/
+
+# Jetbrains
+.idea
