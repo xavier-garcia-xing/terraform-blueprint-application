@@ -10,8 +10,8 @@ using [Terraform](https://www.terraform.io/) together with [Terragrunt](https://
 
 | Environment    | Type       | Account ID   | Account alias      |
 | -------------- | ---------- | ------------ | ------------------ |
-| `production`       | production | `539633964685`  | `nw-1217610-prod`          |
-| `preview`       | staging    | `996758699345`  | `nw-1217610-dev`          |
+| `production`       | production | `53********85`  | `*********-prod`          |
+| `preview`       | staging    | `99*******45`  | `*********-dev`          |
 
 ## Preparation
 
