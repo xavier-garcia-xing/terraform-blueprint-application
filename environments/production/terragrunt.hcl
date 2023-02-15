@@ -5,7 +5,7 @@ terraform {
 locals {
   environment_type = "production"
   environment_name = "prod"
-  application_name = "terraform-blueprint"
+  application_name = "terraform-blueprint-application"
   account_id       = get_aws_account_id()
 }
 

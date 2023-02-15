@@ -5,7 +5,7 @@ terraform {
 locals {
   environment_type = "staging"
   environment_name = "preview"
-  application_name = "blue-print-poc1"
+  application_name = "terraform-blueprint-application"
   /*get_aws_account_id() is a function that retrieves the AWS account ID
    associated with the current user. It returns a string containing the 
    AWS account ID. It is neccesaty the env var AWS_DEFAULT_REGION or to 

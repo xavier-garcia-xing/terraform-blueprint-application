@@ -5,7 +5,7 @@ terraform {
 locals {
   environment_type = "sandbox"
   environment_name = "sandbox"
-  application_name = "terraform-blueprint"
+  application_name = "terraform-blueprint-application"
   account_id       = get_aws_account_id()
 }
 
