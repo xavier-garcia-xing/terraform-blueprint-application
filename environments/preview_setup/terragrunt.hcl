@@ -12,6 +12,8 @@ locals {
    have proper defined  the region var */
   account_id         = get_aws_account_id()
   deployment_version = "1.0.0"
+  git_domain         = "github.com"
+  git_repo_root      = "xavier-garcia-xing"
 }
 
 remote_state {
@@ -41,4 +43,6 @@ inputs = {
   }
   account_id          = local.account_id
   deployment_version  = local.deployment_version
+  git_domain          = local.git_domain
+  git_repo_root       = local.git_repo_root
 }

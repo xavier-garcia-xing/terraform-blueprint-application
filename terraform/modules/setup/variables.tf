@@ -57,3 +57,13 @@ variable "deployment_version" {
   }
 }
 
+
+variable "git_repo_root" {
+  type = string
+  default = "github.com"
+  
+}
+
+variable "git_domain" {
+  type = string
+}
