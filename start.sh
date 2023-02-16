@@ -3,7 +3,7 @@
 echo "Remember use source start.sh"
 saml2aws login --force
 eval "$(saml2aws script)"
-echo "Remember the access is granted until $AWS_CREDENTIAL_EXPIRATION."
+echo "Remember that the access is granted until $AWS_CREDENTIAL_EXPIRATION."
 export AWS_DEFAULT_REGION=eu-central-1
 export PATH="$HOME/.tfenv/bin:$PATH"
 export TFENV_ARCH="arm64"
