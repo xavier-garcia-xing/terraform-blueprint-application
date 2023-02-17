@@ -224,6 +224,5 @@ data "aws_iam_policy_document" "terraform" {
       "dynamodb:DeleteItem"
     ]
     resources = ["arn:aws:dynamodb:eu-central-1:${var.account_id}:table/${var.dynamodb_table_tf}"]
-    
   }
 }
