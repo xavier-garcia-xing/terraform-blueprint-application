@@ -6,7 +6,7 @@ locals {
   environment_type = "staging"
   environment_name = "preview"
   # it has to be less than 24 characters by alb and other aws element (32 chars) for aws limits
-  application_name = "terraform-blueprint-app"
+  application_name = "terraform-blueprint-infra"
   application_repo_name = "terraform-blueprint-application"
    /*get_aws_account_id() is a function that retrieves the AWS account ID
    associated with the current user. It returns a string containing the 

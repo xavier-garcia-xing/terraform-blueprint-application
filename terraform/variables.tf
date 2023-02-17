@@ -7,6 +7,15 @@ variable "application_name" {
   }
 }
 
+variable "application_infra_name" {
+  type = string
+  validation {
+    # TO_CHANGE: size < 35
+    condition     = length(var.application_infra_name) > 0
+    error_message = "Provide your application name."
+  }
+}
+
 variable "application_repo_name" {
   type = string
   validation {
@@ -71,6 +80,11 @@ variable "git_repo_root" {
 
 variable "git_domain" {
   type = string
+}
+
+variable "dynamodb_table_tf" {
+  type    = string
+  default = "nw-ddbtable-terraform-state"
 }
 
 /*variable "condition" {

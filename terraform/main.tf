@@ -29,7 +29,7 @@ provider "aws" {
 # to be put into application
 // read the VPC ID from SSM
 data "aws_ssm_parameter" "vpc_id" {
-  name = format("%s_vpc_id", var.application_name)
+  name = format("%s_vpc_id", var.application_infra_name)
 }
 
 

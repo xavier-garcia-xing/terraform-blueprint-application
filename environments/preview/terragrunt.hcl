@@ -8,6 +8,7 @@ locals {
  # it has to be less than 24 characters by alb and other aws element (32 chars) for aws limits
   application_name = "terraform-blueprint-app"
   application_repo_name = "terraform-blueprint-application"
+  application_infra_name = "terraform-blueprint-infra"
   /*get_aws_account_id() is a function that retrieves the AWS account ID
    associated with the current user. It returns a string containing the 
    AWS account ID. It is neccesaty the env var AWS_DEFAULT_REGION or to 
@@ -16,6 +17,7 @@ locals {
   deployment_version = "1.0.0"
   git_domain         = "github.com"
   git_repo_root      = "xavier-garcia-xing"
+  dynamodb_table_tf  ="nw-ddbtable-terraform-state"
 }
 
 remote_state {
@@ -24,7 +26,7 @@ remote_state {
     bucket         = "nw-bucket-terraform-state-nw-${local.account_id}-${local.environment_name}" # bucket names need to be unique
     key            = "${local.application_name}/${local.environment_name}/terraform.tfstate"      # <APPLICATION>/<ENVIRONMENT>/terraform.tfstate
     region         = "eu-central-1"
-    dynamodb_table = "nw-ddbtable-terraform-state"
+    dynamodb_table = "${local.dynamodb_table_tf}"
     #profile = "saml"
     encrypt = true
     acl     = "private"
@@ -35,6 +37,7 @@ prevent_destroy = false
 
 inputs = {
   application_name = local.application_name
+  application_infra_name = local.application_infra_name
   application_repo_name = local.application_repo_name
   environment_type = local.environment_type
   environment_name = local.environment_name
@@ -48,4 +51,5 @@ inputs = {
   deployment_version  = local.deployment_version
   git_domain          = local.git_domain
   git_repo_root       = local.git_repo_root
+  dynamodb_table_tf   = local.dynamodb_table_tf
 }
