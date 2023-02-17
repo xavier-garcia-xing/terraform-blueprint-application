@@ -8,6 +8,15 @@ resource "aws_iam_openid_connect_provider" "github" {
   thumbprint_list = [data.tls_certificate.github.certificates[0].sha1_fingerprint]
 }
 
+# Export  aws_iam_openid_connect_provider.github.arn in ssm service of aws to share with other modules
+resource "aws_ssm_parameter" "provider_arn" {
+  name        = format("%s_provider_arn", var.application_name)
+  description = format("openid_provider ARN for github policy document for %s", var.application_name)
+  type        = "String"
+  value       = aws_iam_openid_connect_provider.github.arn
+}
+
+
 data "aws_caller_identity" "current" {}
 
 data "aws_iam_policy_document" "github_actions_assume_role_policy" {
@@ -25,7 +34,7 @@ data "aws_iam_policy_document" "github_actions_assume_role_policy" {
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:${var.git_domain}:${var.git_repo_root}/${var.application_name}:ref:refs/heads/main"]
+      values   = ["repo:${var.git_domain}:${var.git_repo_root}/${var.application_repo_name}:ref:refs/heads/main"]
     }
   }
 }
