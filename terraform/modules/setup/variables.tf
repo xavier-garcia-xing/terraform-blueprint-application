@@ -1,8 +1,16 @@
 variable "application_name" {
   type = string
-
   validation {
+    # TO_CHANGE: size < 35
     condition     = length(var.application_name) > 0
+    error_message = "Provide your application name."
+  }
+}
+
+variable "application_repo_name" {
+  type = string
+  validation {
+    condition     = length(var.application_repo_name) > 0
     error_message = "Provide your application name."
   }
 }
