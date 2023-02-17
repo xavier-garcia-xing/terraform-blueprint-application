@@ -58,12 +58,7 @@ data "aws_iam_policy_document" "github_ecr_actions" {
       "ecr:UploadLayerPart",
       "ecr:GetAuthorizationToken",
     ]
-    resources = [aws_ecr_repository.repo.arn]
-    condition {
-      test     = "StringEquals"
-      variable = "aws:ResourceTag/permit-github-action"
-      values   = ["true"]
-    }
+    resources = ["*"]
   }
 }
 
