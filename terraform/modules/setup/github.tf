@@ -56,6 +56,7 @@ data "aws_iam_policy_document" "github_ecr_actions" {
       "ecr:InitiateLayerUpload",
       "ecr:PutImage",
       "ecr:UploadLayerPart",
+      "ecr:GetAuthorizationToken",
     ]
     resources = ["*"]
   }
@@ -71,7 +72,7 @@ resource "aws_iam_role_policy_attachment" "github" {
   role       = aws_iam_role.github.name
   policy_arn = aws_iam_policy.github_ecr_actions.arn
 }
-
+/*
 resource "aws_ecr_repository" "repo" {
   name                 = "jobs-cloud-migration/${var.application_name}"
   image_tag_mutability = "IMMUTABLE"
@@ -82,7 +83,7 @@ resource "aws_ecr_repository" "repo" {
   tags = {
     "permit-github-action" = true
   }
-}
+}*/
 
 data "aws_iam_policy_document" "github_dift_actions" {
   statement {
