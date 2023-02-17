@@ -1,6 +1,6 @@
 
 data "aws_ssm_parameter" "openid_connect_provider_arn" {
-  name        = format("%s_provider_arn", var.application_name)
+  name = format("%s_provider_arn", var.application_name)
 }
 
 data "aws_caller_identity" "current" {}
