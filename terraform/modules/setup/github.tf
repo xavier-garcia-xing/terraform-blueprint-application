@@ -56,7 +56,6 @@ data "aws_iam_policy_document" "github_ecr_actions" {
       "ecr:InitiateLayerUpload",
       "ecr:PutImage",
       "ecr:UploadLayerPart",
-      "ecr:GetAuthorizationToken",
     ]
     resources = ["*"]
   }
