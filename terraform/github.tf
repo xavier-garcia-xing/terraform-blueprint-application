@@ -47,7 +47,7 @@ data "aws_iam_policy_document" "github_ecr_actions" {
       "ecr:UploadLayerPart",
       "ecr:GetAuthorizationToken",
     ]
-    resources = ["arn:aws:ecr:eu-central-1:154603002500:repository/*", "arn:aws:ecr:eu-central-1:${var.account_id}:repository/*"]
+    resources = ["*"]
   }
 }
 
