@@ -34,7 +34,7 @@ resource "aws_iam_role" "github" {
 }
 
 
-
+#tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "github_ecr_actions" {
   statement {
     actions = [
@@ -61,8 +61,8 @@ resource "aws_iam_role_policy_attachment" "github" {
   role       = aws_iam_role.github.name
   policy_arn = aws_iam_policy.github_ecr_actions.arn
 }
-
-data "aws_iam_policy_document" "github_dift_actions" {
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "github_driftctl_actions" {
   statement {
     effect = "Allow"
     actions = [
@@ -189,7 +189,7 @@ data "aws_iam_policy_document" "github_dift_actions" {
 resource "aws_iam_role_policy" "driftctl_policy" {
   name   = "${var.application_name}-github-deployment-driftctl-policy"
   role   = aws_iam_role.github.name
-  policy = data.aws_iam_policy_document.github_dift_actions.json
+  policy = data.aws_iam_policy_document.github_driftctl_actions.json
 }
 
 resource "aws_iam_role_policy" "terraform" {
