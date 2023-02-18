@@ -7,7 +7,7 @@
 
 # Terragrunt
 **/.terragrunt-cache
-**/.terrafrom.lock.hcl
+**/.terraform.lock.hcl
 
 # Homebrew
 Brewfile.lock.json
