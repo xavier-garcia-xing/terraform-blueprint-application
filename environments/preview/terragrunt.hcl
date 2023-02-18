@@ -27,7 +27,7 @@ remote_state {
     key            = "${local.application_name}/${local.environment_name}/terraform.tfstate"      # <APPLICATION>/<ENVIRONMENT>/terraform.tfstate
     region         = "eu-central-1"
     dynamodb_table = "${local.dynamodb_table_tf}"
-    profile = "saml"
+    #profile = "saml"
     encrypt = true
     acl     = "private"
   }
