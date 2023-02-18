@@ -269,7 +269,6 @@ data "aws_iam_policy_document" "terraform" {
     actions   = ["s3:ListBucket"]
     resources = ["arn:aws:s3:::${local.terraform_bucket_name}"]
   }
-  #tfsec:ignore:aws-iam-no-policy-wildcards
   statement {
     effect = "Allow"
     actions = [
@@ -278,8 +277,7 @@ data "aws_iam_policy_document" "terraform" {
       "s3:DeleteObject"
     ]
     resources = [
-      #HAVE_TO_CHANGE: *-->$(local.key). Just for test
-      "arn:aws:s3:::${local.terraform_bucket_name}/*"
+      "arn:aws:s3:::${local.terraform_bucket_name}/${local.key}"
     ]
   }
   #tfsec:ignore:aws-iam-no-policy-wildcards
