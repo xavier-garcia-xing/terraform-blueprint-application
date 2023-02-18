@@ -12,7 +12,7 @@ on:
       aws_role:
         required: false
         type: string
-        default: terraform-blueprint-infra-github-deployment
+        default: terraform-blueprint-app-github-deployment
       aws_region:
         required: false
         type: string
