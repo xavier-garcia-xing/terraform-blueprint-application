@@ -251,4 +251,47 @@ data "aws_iam_policy_document" "terraform" {
     resources = [aws_dynamodb_table.lock.arn]
   }
 }*/
+resource "aws_iam_role_policy" "driftctl_policy" {
+  name   = "${var.application_name}-github-deployment-driftctl-policy"
+  role   = aws_iam_role.github.name
+  policy = data.aws_iam_policy_document.github_driftctl_actions.json
+}
+
+resource "aws_iam_role_policy" "terraform" {
+  name   = "${var.application_name}-github-deployment_s3-state-policy"
+  role   = aws_iam_role.github.name
+  policy = data.aws_iam_policy_document.terraform.json
+}
+
+data "aws_iam_policy_document" "terraform" {
+  statement {
+    effect    = "Allow"
+    actions   = ["s3:ListBucket"]
+    resources = ["arn:aws:s3:::${local.terraform_bucket_name}"]
+  }
+  #tfsec:ignore:aws-iam-no-policy-wildcards
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:DeleteObject"
+    ]
+    resources = [
+      #HAVE_TO_CHANGE: *-->$(local.key). Just for test
+      "arn:aws:s3:::${local.terraform_bucket_name}/*"
+    ]
+  }
+  #tfsec:ignore:aws-iam-no-policy-wildcards
+  statement {
+    effect = "Allow"
+    actions = [
+      "dynamodb:DescribeTable",
+      "dynamodb:GetItem",
+      "dynamodb:PutItem",
+      "dynamodb:DeleteItem"
+    ]
+    resources = ["arn:aws:dynamodb:eu-central-1:*:*:table/${var.dynamodb_table_tf}"]
+  }
+}
 
