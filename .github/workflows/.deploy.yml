@@ -67,7 +67,7 @@ jobs:
           mv conftest /usr/local/bin
           conftest -v
       - name: terragrunt test access
-        run: aws s3 ls aws s3 ls nw-bucket-terraform-state-nw-996758699345-preview/terraform-blueprint-app/preview/ 
+        run: aws s3 ls nw-bucket-terraform-state-nw-996758699345-preview/terraform-blueprint-app/preview/ 
 
       - name: terragrunt plan
         run: ./scripts/plan.sh ${{ env.environment }}
