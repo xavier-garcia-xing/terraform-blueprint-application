@@ -193,7 +193,7 @@ resource "aws_iam_role_policy" "driftctl_policy" {
 }
 
 resource "aws_iam_role_policy" "terraform" {
-  name   = "${var.application_name}-github-deployment"
+  name   = "${var.application_name}-github-deployment_s3-state-policy"
   role   = aws_iam_role.github.name
   policy = data.aws_iam_policy_document.terraform.json
 }
@@ -223,6 +223,6 @@ data "aws_iam_policy_document" "terraform" {
       "dynamodb:PutItem",
       "dynamodb:DeleteItem"
     ]
-    resources = ["arn:aws:dynamodb:eu-central-1:${var.account_id}:table/${var.dynamodb_table_tf}"]
+    resources = ["arn:aws:dynamodb:eu-central-1:*:*:table/${var.dynamodb_table_tf}"]
   }
 }
