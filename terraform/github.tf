@@ -215,6 +215,7 @@ data "aws_iam_policy_document" "terraform" {
       "arn:aws:s3:::${local.terraform_bucket_name}/${local.key}"
     ]
   }
+  #tfsec:ignore:aws-iam-no-policy-wildcards
   statement {
     effect = "Allow"
     actions = [
