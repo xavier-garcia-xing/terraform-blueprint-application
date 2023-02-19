@@ -192,13 +192,7 @@ resource "aws_iam_role_policy" "driftctl_policy" {
   policy = data.aws_iam_policy_document.github_driftctl_actions.json
 }
 
-resource "aws_iam_role_policy" "terraform" {
-  name   = "${var.application_name}-github-deployment_s3-state-policy"
-  role   = aws_iam_role.github.name
-  policy = data.aws_iam_policy_document.terraform.json
-}
-
-data "aws_iam_policy_document" "terraform" {
+data "aws_iam_policy_document" "github-s3-action-policy" {
   statement {
     effect    = "Allow"
     actions   = ["s3:ListBucket"]
@@ -226,4 +220,20 @@ data "aws_iam_policy_document" "terraform" {
     ]
     resources = ["arn:aws:dynamodb:eu-central-1:*:*:table/${var.dynamodb_table_tf}"]
   }
+}
+
+resource "aws_iam_policy" "github-s3-action" {
+  name        = "${var.application_name}-github-deployment_s3-state-policy"
+  description = "Grant Github Actions the ability to push to state s3"
+  policy      = data.aws_iam_policy_document.github-s3-action-policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "github-s3" {
+  role       = aws_iam_role.github.name
+  policy_arn = aws_iam_policy.github-s3-action.arn
+}
+
+resource "aws_iam_role_policy_attachment" "kms" {
+  policy_arn = "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser"
+  role       = aws_iam_role.github.name
 }
