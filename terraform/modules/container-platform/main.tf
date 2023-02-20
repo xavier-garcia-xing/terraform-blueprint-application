@@ -73,19 +73,7 @@ resource "aws_ecs_service" "ecs_app" {
 data "aws_iam_policy_document" "ecs_task_assume_role" {
   statement {
     actions = [
-      "sts:AssumeRole",
-      "elasticloadbalancing:CreateLoadBalancer",
-      "ec2:DescribeAccountAttributes",
-      "ec2:DescribeAddresses",
-      "ec2:DescribeInternetGateways",
-      "ec2:DescribeSecurityGroups",
-      "ec2:DescribeSubnets",
-      "ec2:DescribeVpcs",
-      "iam:CreateServiceLinkedRole",
-      "ec2:DescribeSecurityGroups",
-      "ec2:DescribeSubnets",
-      "ec2:DescribeVpcs",
-      "iam:CreateServiceLinkedRole"
+      "sts:AssumeRole"
     ]
     principals {
       type        = "Service"

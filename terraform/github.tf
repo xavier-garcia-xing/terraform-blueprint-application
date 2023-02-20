@@ -281,4 +281,34 @@ resource "aws_iam_role_policy_attachment" "github-ssm" {
   role       = aws_iam_role.github.name
   policy_arn = aws_iam_policy.github-ssm-action.arn
 }
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "github_alb_role_policy" {
+  statement {
+    actions = [
+      "elasticloadbalancing:CreateLoadBalancer",
+      "ec2:DescribeAccountAttributes",
+      "ec2:DescribeAddresses",
+      "ec2:DescribeInternetGateways",
+      "ec2:DescribeSecurityGroups",
+      "ec2:DescribeSubnets",
+      "ec2:DescribeVpcs",
+      "iam:CreateServiceLinkedRole",
+      "ec2:DescribeSecurityGroups",
+      "ec2:DescribeSubnets",
+      "ec2:DescribeVpcs",
+      "iam:CreateServiceLinkedRole"
+    ]
+    resources = ["*"]
+    effect    = "Allow"
+  }
+}
+resource "aws_iam_policy" "github-alb-action" {
+  name        = "${var.application_name}-github-deployment-alb-policy"
+  description = "Grant Github Actions the ability to create alb"
+  policy      = data.aws_iam_policy_document.github_alb_role_policy.json
+}
 
+resource "aws_iam_role_policy_attachment" "github-alb" {
+  role       = aws_iam_role.github.name
+  policy_arn = aws_iam_policy.github-alb-action.arn
+}
