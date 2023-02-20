@@ -1,6 +1,8 @@
 
 locals {
   openid_connect_provider_key = format("%s_provider_arn", var.application_infra_name)
+  sub_arn_key                 = format("arn:aws:ssm:%s:%s:parameter/", var.region, var.account_id)
+  arn_key_list                = formatlist("${local.sub_arn_key}/%s", var.ssm_parameters)
 }
 
 # Import the arn openid provider parameter from setup module
@@ -235,8 +237,8 @@ data "aws_iam_policy_document" "github-s3-action-policy" {
 }
 
 resource "aws_iam_policy" "github-s3-action" {
-  name        = "${var.application_name}-github-deployment-s3-state-policy"
-  description = "Grant Github Actions the ability to push to state s3"
+  name        = "${var.application_name}-github-deployment-s3-terraform-state-policy"
+  description = "Grant Github Actions the ability to push to terraform state s3"
   policy      = data.aws_iam_policy_document.github-s3-action-policy.json
 }
 
@@ -249,7 +251,7 @@ resource "aws_iam_role_policy_attachment" "kms" {
   policy_arn = "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser"
   role       = aws_iam_role.github.name
 }
-/*
+
 data "aws_iam_policy_document" "github_ssm_role_policy" {
   statement {
     actions   = ["ssm:DescribeParameters"]
@@ -259,7 +261,19 @@ data "aws_iam_policy_document" "github_ssm_role_policy" {
 
   statement {
     actions   = ["ssm:GetParametersByPath", "ssm:GetParameters"]
-    resources = ["${formatlist("arn:aws:ssm:%s:%s:parameter/%s", var.region, var.account_id, var.ssm_parameters)}"]
+    resources = formatlist("%s", local.arn_key_list)
     effect    = "Allow"
   }
-}*/
+}
+
+resource "aws_iam_policy" "github-ssm-action" {
+  name        = "${var.application_name}-github-deployment-ssm-policy"
+  description = "Grant Github Actions the ability to push to ssm the info to share"
+  policy      = data.aws_iam_policy_document.github_ssm_role_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "github-ssm" {
+  role       = aws_iam_role.github.name
+  policy_arn = aws_iam_policy.github-ssm-action.arn
+}
+

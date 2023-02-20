@@ -94,7 +94,7 @@ variable "ssm_actions" {
 }
 
 variable "ssm_parameters" {
-  type = list(any)
+  type = list(string)
   # default     = [var.openid_connect_provider_key,var.vpc_id_key]
   description = "List of SSM parameters to apply the actions. A parameter can include a path and a name pattern that you define by using forward slashes, e.g. `kops/secret-*`"
 }
