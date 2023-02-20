@@ -23,20 +23,16 @@ provider "aws" {
   }
 }
 
+locals {
+  #vpc_id     = data.aws_ssm_parameter.vpc_id.value
+  vpc_id_key =format("%s_vpc_id", var.application_infra_name)
+}
 
-
-
-# to be put into application
 // read the VPC ID from SSM
 data "aws_ssm_parameter" "vpc_id" {
-  name = format("%s_vpc_id", var.application_infra_name)
+  name = local.vpc_id_key # name of the key for recive the var from setup
 }
 
-
-locals {
-  #vpc_id = "${data.terraform_remote_state.vpc.outputs.vpc_id}"
-  vpc_id = data.aws_ssm_parameter.vpc_id.value
-}
 module "website" {
   source           = "./modules/website"
   application_name = var.application_name
@@ -44,14 +40,12 @@ module "website" {
   environment_name = var.environment_name
 }
 
-
-
 data "aws_region" "current" {}
 
 #tfsec:ignore:aws-ec2-no-public-egress-sgr
 resource "aws_security_group" "nginx" {
   name   = "Nginx"
-  vpc_id = local.vpc_id #module.vpc.vpc_id
+  vpc_id = data.aws_ssm_parameter.vpc_id.value #module.vpc.vpc_id
 
 
   # Allow Docker hub access
@@ -115,5 +109,5 @@ module "container-platform" {
   }
   environment_type = var.environment_type
   environment_name = var.environment_name
-  vpc_id           = local.vpc_id
+  vpc_id           = data.aws_ssm_parameter.vpc_id.value
 }

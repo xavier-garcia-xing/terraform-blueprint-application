@@ -75,7 +75,22 @@ variable "git_domain" {
   type = string
 }
 
-/*variable "condition" {
+variable "region" {
+  type        = string
+  description = "AWS Region"
+}
+/*
+
+variable "vpc_id" {
+  type = string
+}
+variable "ssm_parameters" {
+  type        = list
+  #default     = [local.openid_connect_provider_key,local.vpc_id_key]
+  description = "List of SSM parameters to apply the actions. A parameter can include a path and a name pattern that you define by using forward slashes, e.g. `kops/secret-*`"
+}
+
+variable "condition" {
   description = "Github conditions to apply to the AWS Role. E.g. from which org/repo/branch is it allowed to be run."
   type        = string
 }

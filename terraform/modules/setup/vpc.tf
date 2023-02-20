@@ -23,9 +23,9 @@ module "vpc" {
     tier = "private"
   }
 }
-#Introduce vpc in ssm service of aws to share with other modules
+# Export vpc in ssm service of aws to share with other modules
 resource "aws_ssm_parameter" "vpc_id" {
-  name        = format("%s_vpc_id", var.application_name)
+  name        = local.vpc_id_key #format("%s_vpc_id", var.application_name)
   description = format("VPC id for workload %s", var.application_name)
   type        = "String"
   value       = module.vpc.vpc_id

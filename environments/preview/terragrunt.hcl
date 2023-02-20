@@ -17,7 +17,9 @@ locals {
   deployment_version = "1.0.0"
   git_domain         = "github.com"
   git_repo_root      = "xavier-garcia-xing"
-  dynamodb_table_tf  ="nw-ddbtable-terraform-state"
+  dynamodb_table_tf  = "nw-ddbtable-terraform-state"
+  region             = "eu-central-1"
+  
 }
 
 remote_state {
@@ -25,7 +27,7 @@ remote_state {
   config = {
     bucket         = "nw-bucket-terraform-state-nw-${local.account_id}-${local.environment_name}" # bucket names need to be unique
     key            = "${local.application_name}/${local.environment_name}/terraform.tfstate"      # <APPLICATION>/<ENVIRONMENT>/terraform.tfstate
-    region         = "eu-central-1"
+    region         = "${local.region}"
     dynamodb_table = "${local.dynamodb_table_tf}"
     #profile = "saml"
     encrypt = true
@@ -52,4 +54,9 @@ inputs = {
   git_domain          = local.git_domain
   git_repo_root       = local.git_repo_root
   dynamodb_table_tf   = local.dynamodb_table_tf
+  region              = local.region
+  #Technical keys aschange with the different apps
+  openid_connect_provider_key = format("%s_provider_arn", local.application_infra_name)
+  vpc_id_key                  = format("%s_vpc_id", local.application_infra_name) 
+  ssm_parameters              =[format("%s_provider_arn", local.application_infra_name),format("%s_vpc_id", local.application_infra_name)]
 }
