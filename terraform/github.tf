@@ -391,7 +391,8 @@ resource "aws_iam_role_policy_attachment" "github-cloudfront" {
 data "aws_iam_policy_document" "github_iam_role_policy" {
   statement {
     actions = [
-      "iam:ListPolicyVersions"
+      "iam:ListPolicyVersions",
+      "iam:DetachRolePolicy"
     ]
     resources = ["*"]
     effect    = "Allow"
