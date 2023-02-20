@@ -88,13 +88,13 @@ variable "region" {
 }
 
 variable "ssm_actions" {
-  type        = list
+  type        = list(any)
   default     = ["ssm:GetParametersByPath", "ssm:GetParameters"]
   description = "SSM actions to allow"
 }
 
 variable "ssm_parameters" {
-  type        = list
+  type = list(any)
   # default     = [var.openid_connect_provider_key,var.vpc_id_key]
   description = "List of SSM parameters to apply the actions. A parameter can include a path and a name pattern that you define by using forward slashes, e.g. `kops/secret-*`"
 }

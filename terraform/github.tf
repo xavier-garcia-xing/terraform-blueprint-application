@@ -1,6 +1,6 @@
 
-locals{
-openid_connect_provider_key=format("%s_provider_arn", var.application_infra_name)
+locals {
+  openid_connect_provider_key = format("%s_provider_arn", var.application_infra_name)
 }
 
 # Import the arn openid provider parameter from setup module
@@ -200,8 +200,8 @@ resource "aws_iam_role_policy" "driftctl_policy" {
 
 data "aws_iam_policy_document" "github-s3-action-policy" {
   statement {
-    effect    = "Allow"
-    actions   = [
+    effect = "Allow"
+    actions = [
       "s3:ListBucket",
       "s3:GetObjectVersion",
       "s3:GetObject",

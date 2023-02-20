@@ -7,9 +7,9 @@ resource "aws_iam_openid_connect_provider" "github" {
   client_id_list  = ["sts.amazonaws.com"]
   thumbprint_list = [data.tls_certificate.github.certificates[0].sha1_fingerprint]
 }
-locals{
-openid_connect_provider_key = format("%s_provider_arn", var.application_name)
-vpc_id_key                  = format("%s_vpc_id", var.application_name)
+locals {
+  openid_connect_provider_key = format("%s_provider_arn", var.application_name)
+  vpc_id_key                  = format("%s_vpc_id", var.application_name)
 }
 
 

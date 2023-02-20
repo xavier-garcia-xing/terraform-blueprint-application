@@ -25,7 +25,7 @@ provider "aws" {
 
 locals {
   #vpc_id     = data.aws_ssm_parameter.vpc_id.value
-  vpc_id_key =format("%s_vpc_id", var.application_infra_name)
+  vpc_id_key = format("%s_vpc_id", var.application_infra_name)
 }
 
 // read the VPC ID from SSM
