@@ -7,6 +7,9 @@ locals {
 #### S3 bucket for our website
 resource "aws_s3_bucket" "website" {
   bucket = local.website_bucket_name
+  tags = {
+     data_classification= "public"
+  }
 }
 
 ### S3 website bucket acl
@@ -62,6 +65,9 @@ resource "aws_s3_bucket_public_access_block" "website" {
 resource "aws_s3_bucket" "access_log" {
   bucket        = local.logging_bucket_name
   force_destroy = true
+  tags = {
+     data_classification= "private"
+  }
 }
 
 ### S3 access_log bucket acl
