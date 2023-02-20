@@ -369,7 +369,8 @@ data "aws_iam_policy_document" "github_cloudfront_role_policy" {
       "cloudfront:GetCloudFrontOriginAccessIdentity",
       "cloudfront:GetCachePolicy",
       "cloudfront:GetOriginRequestPolicy",
-      "cloudfront:GetResponseHeadersPolicy"
+      "cloudfront:GetResponseHeadersPolicy",
+      "cloudfront:UpdateDistribution"
     ]
     resources = ["*"]
     effect    = "Allow"
