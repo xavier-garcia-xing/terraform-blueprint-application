@@ -1,7 +1,7 @@
 
 locals {
   openid_connect_provider_key = format("%s_provider_arn", var.application_infra_name)
-  sub_arn_key                 = format("arn:aws:ssm:%s:%s:parameter/", var.region, var.account_id)
+  sub_arn_key                 = format("arn:aws:ssm:%s:%s:parameter", var.region, var.account_id)
   arn_key_list                = formatlist("${local.sub_arn_key}/%s", var.ssm_parameters)
 }
 
