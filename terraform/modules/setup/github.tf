@@ -10,7 +10,7 @@ resource "aws_iam_openid_connect_provider" "github" {
 locals {
   openid_connect_provider_key = format("%s_provider_arn", var.application_name)
   vpc_id_key                  = format("%s_vpc_id", var.application_name)
-  sub_arn_key                 = format("arn:aws:ssm:%s:%s:parameter/", var.region, var.account_id)
+  sub_arn_key                 = format("arn:aws:ssm:%s:%s:parameter", var.region, var.account_id)
   arn_key_list                = formatlist("${local.sub_arn_key}/%s", var.ssm_parameters)
 }
 
