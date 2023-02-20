@@ -288,6 +288,8 @@ data "aws_iam_policy_document" "github_alb_role_policy" {
       "elasticloadbalancing:CreateLoadBalancer",
       "elasticloadbalancing:DescribeLoadBalancerAttributes",
       "elasticloadbalancing:DescribeTargetGroups",
+      "elasticloadbalancing:DescribeTargetGroupAttributes",
+      "elasticloadbalancing:DescribeTags",
       "ec2:DescribeAccountAttributes",
       "ec2:DescribeAddresses",
       "ec2:DescribeInternetGateways",
@@ -341,7 +343,8 @@ resource "aws_iam_role_policy_attachment" "github-ecs" {
 data "aws_iam_policy_document" "github_logs_role_policy" {
   statement {
     actions = [
-      "logs:DescribeLogGroups"
+      "logs:DescribeLogGroups",
+      "logs:ListTagsLogGroup"
     ]
     resources = ["*"]
     effect    = "Allow"
