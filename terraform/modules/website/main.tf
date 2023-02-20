@@ -203,7 +203,7 @@ resource "aws_cloudfront_distribution" "website" {
 
   viewer_certificate {
     cloudfront_default_certificate = true
-    minimum_protocol_version       = "TLSv1.2_2021"
+    #minimum_protocol_version       = "TLSv1.2_2021"
   }
 
   origin {
@@ -223,8 +223,8 @@ resource "aws_cloudfront_distribution" "website" {
 
     viewer_protocol_policy = "redirect-to-https"
     min_ttl                = 0
-    default_ttl            = 3600
-    max_ttl                = 7200
+    #default_ttl            = 3600
+    #max_ttl                = 7200
 
     cache_policy_id            = aws_cloudfront_cache_policy.website-cache-policy.id
     origin_request_policy_id   = aws_cloudfront_origin_request_policy.website-origin-request-policy.id
