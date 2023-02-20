@@ -286,6 +286,8 @@ data "aws_iam_policy_document" "github_alb_role_policy" {
   statement {
     actions = [
       "elasticloadbalancing:CreateLoadBalancer",
+      "elasticloadbalancing:DescribeLoadBalancerAttributes",
+      "elasticloadbalancing:DescribeTargetGroups",
       "ec2:DescribeAccountAttributes",
       "ec2:DescribeAddresses",
       "ec2:DescribeInternetGateways",
@@ -311,4 +313,71 @@ resource "aws_iam_policy" "github-alb-action" {
 resource "aws_iam_role_policy_attachment" "github-alb" {
   role       = aws_iam_role.github.name
   policy_arn = aws_iam_policy.github-alb-action.arn
+}
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "github_ecs_role_policy" {
+  statement {
+    actions = [
+      "ecs:DescribeClusters",
+      "ecs:DescribeTaskDefinition"
+    ]
+    resources = ["*"]
+    effect    = "Allow"
+  }
+}
+resource "aws_iam_policy" "github-ecs-action" {
+  name        = "${var.application_name}-github-deployment-ecs-policy"
+  description = "Grant Github Actions the ability to create ecs"
+  policy      = data.aws_iam_policy_document.github_ecs_role_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "github-ecs" {
+  role       = aws_iam_role.github.name
+  policy_arn = aws_iam_policy.github-ecs-action.arn
+}
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "github_logs_role_policy" {
+  statement {
+    actions = [
+      "logs:DescribeLogGroups"
+    ]
+    resources = ["*"]
+    effect    = "Allow"
+  }
+}
+resource "aws_iam_policy" "github-logs-action" {
+  name        = "${var.application_name}-github-deployment-logs-policy"
+  description = "Grant Github Actions the ability to create logs"
+  policy      = data.aws_iam_policy_document.github_logs_role_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "github-logs" {
+  role       = aws_iam_role.github.name
+  policy_arn = aws_iam_policy.github-logs-action.arn
+}
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "github_cloudfront_role_policy" {
+  statement {
+    actions = [
+      "cloudfront:GetCloudFrontOriginAccessIdentity",
+      "cloudfront:GetCachePolicy",
+      "cloudfront:GetOriginRequestPolicy",
+      "cloudfront:GetResponseHeadersPolicy"
+    ]
+    resources = ["*"]
+    effect    = "Allow"
+  }
+}
+resource "aws_iam_policy" "github-cloudfront-action" {
+  name        = "${var.application_name}-github-deployment-cloudfront-policy"
+  description = "Grant Github Actions the ability to create cloudfront"
+  policy      = data.aws_iam_policy_document.github_cloudfront_role_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "github-cloudfront" {
+  role       = aws_iam_role.github.name
+  policy_arn = aws_iam_policy.github-cloudfront-action.arn
 }
