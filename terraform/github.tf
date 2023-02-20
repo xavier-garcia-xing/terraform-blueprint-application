@@ -386,3 +386,25 @@ resource "aws_iam_role_policy_attachment" "github-cloudfront" {
   role       = aws_iam_role.github.name
   policy_arn = aws_iam_policy.github-cloudfront-action.arn
 }
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "github_iam_role_policy" {
+  statement {
+    actions = [
+      "iam:ListPolicyVersions",
+      "iam:DetachRolePolicy"
+    ]
+    resources = ["*"]
+    effect    = "Allow"
+  }
+}
+resource "aws_iam_policy" "github-iam-action" {
+  name        = "${var.application_name}-github-deployment-iam-policy"
+  description = "Grant Github Actions the ability to create iam"
+  policy      = data.aws_iam_policy_document.github_iam_role_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "github-iam" {
+  role       = aws_iam_role.github.name
+  policy_arn = aws_iam_policy.github-iam-action.arn
+}
