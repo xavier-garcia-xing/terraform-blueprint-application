@@ -7,10 +7,15 @@ resource "aws_iam_openid_connect_provider" "github" {
   client_id_list  = ["sts.amazonaws.com"]
   thumbprint_list = [data.tls_certificate.github.certificates[0].sha1_fingerprint]
 }
+locals {
+  openid_connect_provider_key = format("%s_provider_arn", var.application_name)
+  vpc_id_key                  = format("%s_vpc_id", var.application_name)
+}
+
 
 # Export  aws_iam_openid_connect_provider.github.arn in ssm service of aws to share with other modules
 resource "aws_ssm_parameter" "provider_arn" {
-  name        = format("%s_provider_arn", var.application_name)
+  name        = local.openid_connect_provider_key
   description = format("openid_provider ARN for github policy document for %s", var.application_name)
   type        = "String"
   value       = aws_iam_openid_connect_provider.github.arn
@@ -250,7 +255,7 @@ data "aws_iam_policy_document" "terraform" {
     ]
     resources = [aws_dynamodb_table.lock.arn]
   }
-}*/
+}
 resource "aws_iam_role_policy" "driftctl_policy" {
   name   = "${var.application_name}-github-deployment-driftctl-policy"
   role   = aws_iam_role.github.name
@@ -291,5 +296,5 @@ data "aws_iam_policy_document" "terraform" {
     ]
     resources = ["arn:aws:dynamodb:eu-central-1:*:*:table/${var.dynamodb_table_tf}"]
   }
-}
+}*/
 

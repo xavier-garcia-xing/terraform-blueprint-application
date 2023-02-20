@@ -16,6 +16,7 @@ locals {
   deployment_version = "1.0.0"
   git_domain         = "github.com"
   git_repo_root      = "xavier-garcia-xing"
+  region             = "eu-central-1"
 }
 
 remote_state {
@@ -23,7 +24,7 @@ remote_state {
   config = {
     bucket         = "nw-bucket-terraform-state-nw-${local.account_id}-${local.environment_name}" # bucket names need to be unique
     key            = "${local.application_name}/${local.environment_name}-setup/terraform.tfstate"      # <APPLICATION>/<ENVIRONMENT>/terraform.tfstate
-    region         = "eu-central-1"
+    region         = "${local.region}"
     dynamodb_table = "nw-ddbtable-terraform-state"
     #profile = "saml"
     encrypt = true
@@ -48,4 +49,5 @@ inputs = {
   deployment_version  = local.deployment_version
   git_domain          = local.git_domain
   git_repo_root       = local.git_repo_root
+  region              = local.region
 }

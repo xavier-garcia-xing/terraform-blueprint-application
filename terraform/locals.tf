@@ -11,8 +11,8 @@ locals {
     #map-migrated     = "d-server-03s3zvveibw473" # add this tag for a migrated workload
   }
   # setup deployment
-  terraform_bucket_name = "nw-bucket-terraform-state-nw-996758699345-${var.environment_name}"       # bucket names need to be unique ${var.account_id}
-  key                   = "${var.application_name}/${var.environment_name}-setup/terraform.tfstate" # <APPLICATION>/<ENVIRONMENT>/terraform.tfstate
+  terraform_bucket_name = "nw-bucket-terraform-state-nw-996758699345-${var.environment_name}" # bucket names need to be unique ${var.account_id}
+  key                   = "${var.application_name}/${var.environment_name}/terraform.tfstate" # <APPLICATION>/<ENVIRONMENT>/terraform.tfstate
   region                = "eu-central-1"
 
 }

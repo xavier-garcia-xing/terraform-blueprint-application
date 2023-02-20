@@ -44,12 +44,9 @@ variable "task" {
 variable "vpc_id" {
   type = string
 }
-
-
 variable "environment_type" {
   type = string
 }
-
 variable "environment_name" {
   type = string
 }

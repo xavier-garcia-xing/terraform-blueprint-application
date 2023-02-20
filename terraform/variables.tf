@@ -24,7 +24,6 @@ variable "application_repo_name" {
   }
 }
 
-
 variable "environment_type" {
   type = string
 
@@ -61,7 +60,6 @@ variable "account_id" {
   }
 }
 
-
 variable "deployment_version" {
   type = string
 
@@ -70,8 +68,6 @@ variable "deployment_version" {
     condition     = can(regex("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$", var.deployment_version))
   }
 }
-
-
 
 variable "git_repo_root" {
   type    = string
@@ -86,7 +82,22 @@ variable "dynamodb_table_tf" {
   type    = string
   default = "nw-ddbtable-terraform-state"
 }
+variable "region" {
+  type        = string
+  description = "AWS Region"
+}
 
+variable "ssm_actions" {
+  type        = list(any)
+  default     = ["ssm:GetParametersByPath", "ssm:GetParameters"]
+  description = "SSM actions to allow"
+}
+
+variable "ssm_parameters" {
+  type = list(any)
+  # default     = [var.openid_connect_provider_key,var.vpc_id_key]
+  description = "List of SSM parameters to apply the actions. A parameter can include a path and a name pattern that you define by using forward slashes, e.g. `kops/secret-*`"
+}
 /*variable "condition" {
   description = "Github conditions to apply to the AWS Role. E.g. from which org/repo/branch is it allowed to be run."
   type        = string

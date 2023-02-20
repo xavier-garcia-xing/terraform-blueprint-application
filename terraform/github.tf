@@ -1,7 +1,13 @@
 
-data "aws_ssm_parameter" "openid_connect_provider_arn" {
-  name = format("%s_provider_arn", var.application_infra_name)
+locals {
+  openid_connect_provider_key = format("%s_provider_arn", var.application_infra_name)
 }
+
+# Import the arn openid provider parameter from setup module
+data "aws_ssm_parameter" "openid_connect_provider_arn" {
+  name = local.openid_connect_provider_key
+}
+
 
 data "aws_caller_identity" "current" {}
 # Here, it is necessary to read the role, and modify it with new conditions. maybe the best is get the conditions from ssn and include one more
@@ -194,8 +200,14 @@ resource "aws_iam_role_policy" "driftctl_policy" {
 
 data "aws_iam_policy_document" "github-s3-action-policy" {
   statement {
-    effect    = "Allow"
-    actions   = ["s3:ListBucket"]
+    effect = "Allow"
+    actions = [
+      "s3:ListBucket",
+      "s3:GetObjectVersion",
+      "s3:GetObject",
+      "s3:GetBucketVersioning",
+      "s3:GetBucketLocation"
+    ]
     resources = ["arn:aws:s3:::${local.terraform_bucket_name}"]
   }
   statement {
@@ -223,7 +235,7 @@ data "aws_iam_policy_document" "github-s3-action-policy" {
 }
 
 resource "aws_iam_policy" "github-s3-action" {
-  name        = "${var.application_name}-github-deployment_s3-state-policy"
+  name        = "${var.application_name}-github-deployment-s3-state-policy"
   description = "Grant Github Actions the ability to push to state s3"
   policy      = data.aws_iam_policy_document.github-s3-action-policy.json
 }
@@ -237,3 +249,17 @@ resource "aws_iam_role_policy_attachment" "kms" {
   policy_arn = "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser"
   role       = aws_iam_role.github.name
 }
+/*
+data "aws_iam_policy_document" "github_ssm_role_policy" {
+  statement {
+    actions   = ["ssm:DescribeParameters"]
+    resources = ["*"]
+    effect    = "Allow"
+  }
+
+  statement {
+    actions   = ["ssm:GetParametersByPath", "ssm:GetParameters"]
+    resources = ["${formatlist("arn:aws:ssm:%s:%s:parameter/%s", var.region, var.account_id, var.ssm_parameters)}"]
+    effect    = "Allow"
+  }
+}*/
