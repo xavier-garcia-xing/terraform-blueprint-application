@@ -16,4 +16,4 @@ jobs:
     needs: deploy-preview
     with:
       environment: production
-      accountId: 996758699345
+      accountId: XXXXXXXXXXXXX∫

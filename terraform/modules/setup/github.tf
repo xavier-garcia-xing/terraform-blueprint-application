@@ -10,6 +10,8 @@ resource "aws_iam_openid_connect_provider" "github" {
 locals {
   openid_connect_provider_key = format("%s_provider_arn", var.application_name)
   vpc_id_key                  = format("%s_vpc_id", var.application_name)
+  sub_arn_key                 = format("arn:aws:ssm:%s:%s:parameter/", var.region, var.account_id)
+  arn_key_list                = formatlist("${local.sub_arn_key}/%s", var.ssm_parameters)
 }
 
 
@@ -297,4 +299,30 @@ data "aws_iam_policy_document" "terraform" {
     resources = ["arn:aws:dynamodb:eu-central-1:*:*:table/${var.dynamodb_table_tf}"]
   }
 }*/
+
+data "aws_iam_policy_document" "github_ssm_role_policy" {
+  statement {
+    actions   = ["ssm:DescribeParameters"]
+    resources = ["*"]
+    effect    = "Allow"
+  }
+
+  statement {
+    actions   = ["ssm:GetParametersByPath", "ssm:GetParameters"]
+    resources = formatlist("%s", local.arn_key_list)
+    effect    = "Allow"
+  }
+}
+
+resource "aws_iam_policy" "github-ssm-action" {
+  name        = "${var.application_name}-github-deployment-ssm-policy"
+  description = "Grant Github Actions the ability to push to ssm the info to share"
+  policy      = data.aws_iam_policy_document.github_ssm_role_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "github-ssm" {
+  role       = aws_iam_role.github.name
+  policy_arn = aws_iam_policy.github-ssm-action.arn
+}
+
 

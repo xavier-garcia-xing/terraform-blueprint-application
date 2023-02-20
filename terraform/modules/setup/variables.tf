@@ -79,15 +79,22 @@ variable "region" {
   type        = string
   description = "AWS Region"
 }
-/*
 
+variable "ssm_actions" {
+  type        = list(any)
+  default     = ["ssm:GetParametersByPath", "ssm:GetParameters"]
+  description = "SSM actions to allow"
+}
+
+variable "ssm_parameters" {
+  type = list(string)
+  # default     = [var.openid_connect_provider_key,var.vpc_id_key]
+  description = "List of SSM parameters to apply the actions. A parameter can include a path and a name pattern that you define by using forward slashes, e.g. `kops/secret-*`"
+}
+
+/*
 variable "vpc_id" {
   type = string
-}
-variable "ssm_parameters" {
-  type        = list
-  #default     = [local.openid_connect_provider_key,local.vpc_id_key]
-  description = "List of SSM parameters to apply the actions. A parameter can include a path and a name pattern that you define by using forward slashes, e.g. `kops/secret-*`"
 }
 
 variable "condition" {

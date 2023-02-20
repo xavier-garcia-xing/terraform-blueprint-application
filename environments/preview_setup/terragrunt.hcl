@@ -50,4 +50,7 @@ inputs = {
   git_domain          = local.git_domain
   git_repo_root       = local.git_repo_root
   region              = local.region
+  openid_connect_provider_key = format("%s_provider_arn", local.application_name)
+  vpc_id_key                  = format("%s_vpc_id", local.application_name) 
+  ssm_parameters              =[format("%s_provider_arn", local.application_name),format("%s_vpc_id", local.application_name)]
 }
