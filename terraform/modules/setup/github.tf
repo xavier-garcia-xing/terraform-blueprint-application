@@ -308,7 +308,12 @@ data "aws_iam_policy_document" "github_ssm_role_policy" {
   }
 
   statement {
-    actions   = ["ssm:GetParametersByPath", "ssm:GetParameters"]
+    actions = [
+      "ssm:GetParametersByPath",
+      "ssm:GetParameters",
+      "ssm:GetParameter",
+      "ssm:PutParameter"
+    ]
     resources = formatlist("%s", local.arn_key_list)
     effect    = "Allow"
   }
