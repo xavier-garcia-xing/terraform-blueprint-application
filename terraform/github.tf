@@ -322,7 +322,8 @@ data "aws_iam_policy_document" "github_ecs_role_policy" {
   statement {
     actions = [
       "ecs:DescribeClusters",
-      "ecs:DescribeTaskDefinition"
+      "ecs:DescribeTaskDefinition",
+      "ecs:DescribeServices"
     ]
     resources = ["*"]
     effect    = "Allow"
