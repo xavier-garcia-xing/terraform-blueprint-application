@@ -232,7 +232,7 @@ data "aws_iam_policy_document" "github-s3-action-policy" {
       "dynamodb:PutItem",
       "dynamodb:DeleteItem"
     ]
-    resources = ["arn:aws:dynamodb:eu-central-1:*:*:table/${var.dynamodb_table_tf}"]
+    resources = ["arn:aws:dynamodb:eu-central-1:*:table/${var.dynamodb_table_tf}"]
   }
 }
 
