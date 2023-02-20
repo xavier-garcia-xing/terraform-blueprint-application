@@ -8,7 +8,7 @@ locals {
 resource "aws_s3_bucket" "website" {
   bucket = local.website_bucket_name
   tags = {
-     data_classification= "public"
+    data_classification = "public"
   }
 }
 
@@ -66,7 +66,7 @@ resource "aws_s3_bucket" "access_log" {
   bucket        = local.logging_bucket_name
   force_destroy = true
   tags = {
-     data_classification= "private"
+    data_classification = "private"
   }
 }
 

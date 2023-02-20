@@ -2,7 +2,7 @@ resource "aws_s3_bucket" "alb_logs" {
   bucket        = format("nw-alb-logs-%s-%s", var.task.application_name, var.environment_name)
   force_destroy = true
   tags = {
-     data_classification= "private"
+    data_classification = "private"
   }
 }
 
