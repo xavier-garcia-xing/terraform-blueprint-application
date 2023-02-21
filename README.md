@@ -11,7 +11,7 @@ using [Terraform](https://www.terraform.io/) together with [Terragrunt](https://
 | Environment    | Type       | Account ID   | Account alias      |
 | -------------- | ---------- | ------------ | ------------------ |
 | `production`       | production | `53********85`  | `*********-prod`          |
-| `preview`       | staging    | `99*******45`  | `*********-dev`          |
+| `preview`       | staging    | `99********45`  | `*********-dev`          |
 
 ## Preparation
 
